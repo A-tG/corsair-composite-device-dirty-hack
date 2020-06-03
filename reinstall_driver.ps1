@@ -1,11 +1,14 @@
+$IS_64BIT = [Environment]::Is64BitOperatingSystem;
 $FIRST_DRIVER = 'CorsairVBusDriver.inf'
 $SECOND_DRIVER = 'CorsairVBusDriver.inf'
-$IS_32BIT = ![Environment]::Is64BitOperatingSystem;
-$DEFAULT_DRIVER_PATH = "${Env:ProgramFiles(x86)}\Corsair\CORSAIR iCUE Software\driver\hid"
-if ($IS_32BIT)
+$DRIVERS_SUBPATH = 'drivers\hid'
+$DEFAULT_DRIVER_PATH = ${Env:ProgramFiles}
+if ($IS_64BIT)
 {
-    $DEFAULT_DRIVER_PATH = "${Env:ProgramFiles}\Corsair\CORSAIR iCUE Software\driver\hid"
+    $DEFAULT_DRIVER_PATH = ${Env:ProgramFiles(x86)}
 }
+$DEFAULT_DRIVER_PATH = Join-Path $DEFAULT_DRIVER_PATH 'Corsair\CORSAIR iCUE Software'
+    | Join-Path -ChildPath $DRIVERS_SUBPATH
 
 Function GetOemNameFromOriginal
 {
@@ -25,16 +28,16 @@ If (!($isStopped -or $isDisconnected))
 }
 
 $driversFolder = $DEFAULT_DRIVER_PATH
-$registryInstallPaths = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall'
-if ($IS_32BIT)
+$registryInstallPaths = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall'
+if ($IS_64BIT)
 {
-    $registryInstallPaths = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall'
+    $registryInstallPaths = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall'    
 }
 $corsairInstallRegistry = Get-ChildItem $registryInstallPaths |
     Where-Object {$_.GetValue('DisplayName') -match "ICUE"}
 if ($corsairInstallRegistry)
 {
-    $driversFolder = Join-Path $corsairInstallRegistry.GetValue('InstallLocation') 'driver\hid'
+    $driversFolder = Join-Path $corsairInstallRegistry.GetValue('InstallLocation') $DRIVERS_SUBPATH
 } else
 {
     Write-Host "Unable to find ICUE install location"
