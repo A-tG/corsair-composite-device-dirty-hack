@@ -1,7 +1,7 @@
 $IS_64BIT = [Environment]::Is64BitOperatingSystem;
 $FIRST_DRIVER = 'CorsairVBusDriver.inf'
-$SECOND_DRIVER = 'CorsairVBusDriver.inf'
-$DRIVERS_SUBPATH = 'drivers\hid'
+$SECOND_DRIVER = 'CorsairVHidDriver.inf'
+$DRIVERS_SUBPATH = 'driver\hid'
 $DEFAULT_DRIVER_PATH = ${Env:ProgramFiles}
 if ($IS_64BIT)
 {
