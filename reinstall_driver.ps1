@@ -7,8 +7,8 @@ if ($IS_64BIT)
 {
     $DEFAULT_DRIVER_PATH = ${Env:ProgramFiles(x86)}
 }
-$DEFAULT_DRIVER_PATH = Join-Path $DEFAULT_DRIVER_PATH 'Corsair\CORSAIR iCUE Software'
-    | Join-Path -ChildPath $DRIVERS_SUBPATH
+$DEFAULT_DRIVER_PATH = Join-Path $DEFAULT_DRIVER_PATH 'Corsair\CORSAIR iCUE Software' | 
+    Join-Path -ChildPath $DRIVERS_SUBPATH
 
 Function GetOemNameFromOriginal
 {
