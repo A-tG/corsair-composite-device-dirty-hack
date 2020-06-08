@@ -57,5 +57,5 @@ Write-Host "Corsair Composite Virtual Input Device is disabled"
 Write-Host "Reinstalling drivers"
 pnputil /delete-driver (GetOemNameFromOriginal $FIRST_DRIVER) /uninstall /force
 pnputil /delete-driver (GetOemNameFromOriginal $SECOND_DRIVER) /uninstall /force
-pnputil /add-driver (Join-Path $driversFolder CorsairVBusDriver.inf) /install
-pnputil /add-driver (Join-Path $driversFolder CorsairVHidDriver.inf) /install
+pnputil /add-driver $fullFirstDriverPath /install
+pnputil /add-driver $fullSecondtDriverPath /install
