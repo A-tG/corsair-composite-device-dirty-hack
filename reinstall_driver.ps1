@@ -1,3 +1,7 @@
+param (
+    [switch]$force = $false
+)
+
 $IS_64BIT = [Environment]::Is64BitOperatingSystem;
 $FIRST_DRIVER = 'CorsairVBusDriver.inf'
 $SECOND_DRIVER = 'CorsairVHidDriver.inf'
@@ -21,7 +25,8 @@ $corsairCompositeDevInfo = pnputil /enum-devices |
     Select-String -Context 2, 4 ('Device Description:\s+' + 'Corsair composite virtual input device')
 $isStopped = $corsairCompositeDevInfo.ToString() | Select-String -Context 1 ('Status:\s+' + 'Stopped')
 $isDisconnected = $corsairCompositeDevInfo.ToString() | Select-String -Context 1 ('Status:\s+' + 'Disconnected')
-If (!($isStopped -or $isDisconnected))
+
+If (!($isStopped -or $isDisconnected -or $force))
 {
     Write-Host "No actions needed"
     exit 0
